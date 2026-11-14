@@ -19,7 +19,8 @@
 - setup.sh … 環境確認とテスト書き出し（セッションの最初に実行）
 - scripts/env_setup.sh … Claude Codeの環境「soshi」のセットアップスクリプト欄に貼る内容
 - bin/make_short.py … 型Aの書き出し
-- bin/pc_fetch.py … PC用ダウンローダー
+- bin/pc_fetch.py … PC用ダウンローダー（--dest でドライブのフォルダへ保存）
+- bin/drive_pull.py … クラウド側でドライブから sources/ へ取り込む
 - bin/transcript.py … 字幕→タイムスタンプ付きテキスト
 - logs/posts.csv … 投稿ログ（分析用）
 

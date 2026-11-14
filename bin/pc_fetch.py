@@ -3,9 +3,12 @@
 
 使い方（PCの作業フォルダで）:
   python3 pc_fetch.py URL [URL ...]
+  python3 pc_fetch.py --dest "G:/マイドライブ/soshina-clip/sources" URL ...
 
 必要なもの: yt-dlp（最新版）, deno, ffmpeg
-保存先: ./sources/<動画ID>/ に video.mp4, *.vtt, info.json
+保存先: --dest（省略時は config.env の PC_SOURCES_DIR、それも空なら ./sources）の
+        <動画ID>/ に video.mp4, *.vtt, info.json
+--dest をパソコン版Googleドライブの「soshina-clip/sources」にすると、そのままクラウドへ渡る
 """
 import json, os, subprocess, sys
 
@@ -28,11 +31,23 @@ def run(url, base):
         "-o", os.path.join(d, "video.%(ext)s"), url], check=True)
     print(f"OK: {vid} {info.get('title')}")
 
+def config_dest():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "config.env")
+    if os.path.exists(path):
+        for line in open(path, encoding="utf-8"):
+            if line.startswith("PC_SOURCES_DIR="):
+                return line.split("=", 1)[1].strip().strip('"')
+    return ""
+
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    base = config_dest() or os.path.join(os.getcwd(), "sources")
+    if args[:1] == ["--dest"] and len(args) >= 2:
+        base, args = args[1], args[2:]
+    if not args:
         sys.exit(__doc__)
-    base = os.path.join(os.getcwd(), "sources")
-    for u in sys.argv[1:]:
+    for u in args:
         try:
             run(u, base)
         except subprocess.CalledProcessError as e:
