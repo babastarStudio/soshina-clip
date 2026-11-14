@@ -4,13 +4,15 @@
 使い方（PCの作業フォルダで）:
   python3 pc_fetch.py URL [URL ...]
   python3 pc_fetch.py --dest "G:/マイドライブ/soshina-clip/sources" URL ...
+  python3 pc_fetch.py            ← URLを省くと、保存先の1つ上の fetch_list.txt を読む
+                                   （クラウドの Claude がドライブ上で書く「今週取る動画」リスト）
 
 必要なもの: yt-dlp（最新版）, deno, ffmpeg
 保存先: --dest（省略時は config.env の PC_SOURCES_DIR、それも空なら ./sources）の
         <動画ID>/ に video.mp4, *.vtt, info.json
 --dest をパソコン版Googleドライブの「soshina-clip/sources」にすると、そのままクラウドへ渡る
 """
-import json, os, subprocess, sys
+import json, os, re, subprocess, sys
 
 def run(url, base):
     common = ["yt-dlp", "--no-playlist", "--remote-components", "ejs:github"]
@@ -46,9 +48,22 @@ if __name__ == "__main__":
     if args[:1] == ["--dest"] and len(args) >= 2:
         base, args = args[1], args[2:]
     if not args:
-        sys.exit(__doc__)
+        lst = os.path.join(os.path.dirname(os.path.abspath(base)), "fetch_list.txt")
+        if not os.path.exists(lst):
+            sys.exit(__doc__)
+        for line in open(lst, encoding="utf-8-sig"):
+            line = line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            m = re.search(r"(?:v=|youtu\.be/|shorts/)([\w-]{11})", line)
+            vid = m.group(1) if m else line
+            if os.path.exists(os.path.join(base, vid, "video.mp4")):
+                print(f"skip（取得済み）: {line}")
+                continue
+            args.append(line)
+        print(f"fetch_list.txt から {len(args)} 本を取得します")
     for u in args:
         try:
             run(u, base)
-        except subprocess.CalledProcessError as e:
+        except (subprocess.CalledProcessError, FileNotFoundError) as e:
             print(f"NG: {u} ({e})")
