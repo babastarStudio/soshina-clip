@@ -10,7 +10,12 @@ python3 -c "import PIL" 2>/dev/null || pip install -q --break-system-packages Pi
 python3 -c "import webvtt" 2>/dev/null || pip install -q --break-system-packages webvtt-py
 
 echo "== 日本語フォント"
-[ "$(fc-list :lang=ja | grep -c "Noto Sans CJK")" -gt 0 ] || { echo "Noto Sans CJK がありません"; exit 1; }
+# 型Aは Black / Medium ウェイトを使う（標準の fonts-noto-cjk には入っていない）
+if [ ! -f /usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc ] || [ ! -f /usr/share/fonts/opentype/noto/NotoSansCJK-Medium.ttc ]; then
+  echo "Noto Sans CJK の Black/Medium を追加します"
+  apt-get install -y -q fonts-noto-cjk fonts-noto-cjk-extra >/dev/null 2>&1 || \
+    { apt-get update -q >/dev/null 2>&1 && apt-get install -y -q fonts-noto-cjk fonts-noto-cjk-extra >/dev/null; }
+fi
 
 echo "== フォルダ"
 mkdir -p "$SOURCES_DIR" "$OUT_DIR" "$(dirname "$POST_LOG")"

@@ -4,6 +4,6 @@
 set -e
 pip install -q --break-system-packages Pillow webvtt-py yt-dlp
 command -v ffmpeg >/dev/null 2>&1 || (apt-get update -q && apt-get install -y -q ffmpeg)
-if [ "$(fc-list :lang=ja 2>/dev/null | grep -c 'Noto Sans CJK')" -eq 0 ]; then
-  apt-get update -q && apt-get install -y -q fonts-noto-cjk
+if [ ! -f /usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc ]; then
+  apt-get update -q && apt-get install -y -q fonts-noto-cjk fonts-noto-cjk-extra
 fi

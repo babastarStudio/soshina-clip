@@ -36,6 +36,7 @@ def font(weight, size):
     names = {"black": ["NotoSansCJK-Black.ttc", "ヒラギノ角ゴシック W9.ttc", "YuGothB.ttc"],
              "bold": ["NotoSansCJK-Bold.ttc", "ヒラギノ角ゴシック W6.ttc", "YuGothB.ttc"],
              "medium": ["NotoSansCJK-Medium.ttc", "ヒラギノ角ゴシック W4.ttc", "YuGothM.ttc"]}[weight]
+    names = names + ["NotoSansCJK-Bold.ttc", "NotoSansCJK-Regular.ttc"]  # 太さが無い環境での代替
     for d in FONT_DIRS:
         for n in names:
             p = os.path.join(d, n)
