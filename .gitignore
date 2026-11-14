@@ -1,0 +1,10 @@
+sources/*
+out/*
+*.mp4
+*.m4a
+*.webm
+*.vtt
+__pycache__/
+.DS_Store
+!sources/.gitkeep
+!out/.gitkeep
