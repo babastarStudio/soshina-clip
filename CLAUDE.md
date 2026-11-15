@@ -29,7 +29,8 @@
 - PCを使う日にやること:
   1. その週に使う元動画3〜5本を、丸ごと（720p）＋日本語字幕＋info.json で取得
      - どれを取るかはクラウドのClaudeが決め、ドライブの soshina-clip/fetch_list.txt に書いておく
-     - PCでは引数なしで `python3 bin/pc_fetch.py` を実行するだけ（リストを読み、取得済みは飛ばす）
+     - PCではドライブの soshina-clip/download.bat をダブルクリックするだけ（足りないツールを入れ、リストを読み、取得済みは飛ばす）
+     - pc_fetch.py / download.bat を直したら、ドライブの soshina-clip にも上書きする
   2. 保存先をパソコン版Googleドライブの soshina-clip/sources にしておく（自動でクラウドへ渡る）
   3. 完成済みの動画があれば、保管用にPCの作業フォルダへ書き戻す
 - PCが閉じている間は、クラウドにある素材だけで作業する。素材が足りない時は、次にPCを使う日にまとめて取得する（その都度PCを起動させない）

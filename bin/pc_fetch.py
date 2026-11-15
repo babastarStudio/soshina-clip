@@ -44,7 +44,11 @@ def config_dest():
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    base = config_dest() or os.path.join(os.getcwd(), "sources")
+    here = os.path.dirname(os.path.abspath(__file__))
+    if os.path.exists(os.path.join(here, "fetch_list.txt")):   # ドライブの soshina-clip に置いた場合
+        base = os.path.join(here, "sources")
+    else:
+        base = config_dest() or os.path.join(os.getcwd(), "sources")
     if args[:1] == ["--dest"] and len(args) >= 2:
         base, args = args[1], args[2:]
     if not args:
