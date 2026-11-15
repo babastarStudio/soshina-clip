@@ -19,7 +19,7 @@ fi
 
 echo "== フォルダ"
 mkdir -p "$SOURCES_DIR" "$OUT_DIR" "$(dirname "$POST_LOG")"
-[ -f "$POST_LOG" ] || echo "date,video_id,source_title,start,end,label,header,shorts_url,views_48h,viewed_rate,avg_view_pct,subs_gained,notes" > "$POST_LOG"
+[ -f "$POST_LOG" ] || echo "date,video_id,source_title,start,end,duration_sec,variant,label,header,shorts_url,views_48h,viewed_rate,avg_view_pct,subs_gained,notes" > "$POST_LOG"
 
 echo "== 動作テスト"
 tmp=$(mktemp -d)
